@@ -3,12 +3,12 @@
 //Unit:    04
 //Problem: 02
 
-public class ReadingMaterial {
+public abstract class ReadingMaterial {
   private String[] astrAuthors;
   private int      nPages;
 
   public ReadingMaterial() {
-    this.astrAuthors = {"No one"};
+    this.astrAuthors = new String[] {"No one"};
     this.nPages      = 0;
   }
 
@@ -20,7 +20,7 @@ public class ReadingMaterial {
     return this.astrAuthors;
   }
 
-  public void addCharacter(String strAuthor) {
+  public void addAuthor(String strAuthor) {
     if(strAuthor == null)
         return;
     for(String author : this.astrAuthors) {
@@ -28,7 +28,7 @@ public class ReadingMaterial {
         return;
     }
     String[] tmp = new String[this.astrAuthors.length+1];
-    for(int i=0; i<this.astrAuthors; i++) {
+    for(int i=0; i<this.astrAuthors.length; i++) {
       tmp[i] = this.astrAuthors[i];
     }
     tmp[this.astrAuthors.length] = strAuthor;

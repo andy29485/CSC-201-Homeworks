@@ -18,4 +18,16 @@ public class Journal extends ReadingMaterial {
   public String getPublisher() {
     return this.strPublisher;
   }
+
+  public String toString() {
+    String aut = "";
+    for(int i=0; i<this.getAuthors().length; i++) {
+      if(i!=0) {
+        aut += ", ";
+      }
+      aut += this.getAuthors()[i];
+    }
+    return String.format("Journal: (%d pages) by: %s - pub. %s",
+                                    this.getPages(), aut, this.getPublisher());
+  }
 }

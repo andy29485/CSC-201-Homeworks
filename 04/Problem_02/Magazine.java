@@ -19,4 +19,16 @@ public class Magazine extends Journal {
   public int getIssue() {
     return this.nIssue;
   }
+
+  public String toString() {
+    String aut = "";
+    for(int i=0; i<this.getAuthors().length; i++) {
+      if(i!=0) {
+        aut += ", ";
+      }
+      aut += this.getAuthors()[i];
+    }
+    return String.format("Magazine: (%d pages) by: %s - pub. %s - Issue %d",
+                this.getPages(), aut, this.getPublisher(), this.getIssue());
+  }
 }

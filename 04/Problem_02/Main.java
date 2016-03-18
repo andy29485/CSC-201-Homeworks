@@ -15,14 +15,37 @@
  *
  * Assumptions:
  *   - Things will be hard-coded
+ *   - I can use only default constructors
+ *     - changes can be made using mutator methods(if needed)
  *
  * Pseudocode:
- *   1. TODO
+ *   1. same as all the other problems in this unit but with diffrent names
  */
 
 public class Main {
   public static void main(String[] args) {
-    //TODO
+
+    TextBook a = new TextBook();
+    a.setTitle("Intro to java");
+    a.setPages(300);
+    a.setAuthors(new String[] {"Y. Daniel Liang"});
+
+    Novel b = new Novel();
+    b.setPages(230);
+
+    TechnicalJournal c = new TechnicalJournal();
+    c.setPages(50);
+
+    Magazine d = new Magazine();
+    d.setPages(60);
+    d.setAuthors(new String[] {"J. Nanjan", "Mike Miller",
+                               "Iban Coello", "Brian Buccellato"});
+
+
+    System.out.println(a);
+    System.out.println(b);
+    System.out.println(c);
+    System.out.println(d);
 
     System.exit(0);
   }

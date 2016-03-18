@@ -18,4 +18,16 @@ public class Book extends ReadingMaterial {
   public String getTitle() {
     return this.strTitle;
   }
+
+  public String toString() {
+    String aut = "";
+    for(int i=0; i<this.getAuthors().length; i++) {
+      if(i!=0) {
+        aut += ", ";
+      }
+      aut += this.getAuthors()[i];
+    }
+    return String.format("Book: %s(%d pages) by: %s", this.getTitle(),
+                                                     this.getPages(), aut);
+  }
 }

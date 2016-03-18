@@ -8,7 +8,7 @@ public class TextBook extends Book {
 
   public TextBook() {
     super();
-    this.strSubject("Computer Science");
+    this.strSubject = "Computer Science";
   }
 
   public void setSubject(String strSubject) {
@@ -17,5 +17,17 @@ public class TextBook extends Book {
 
   public String getSubject() {
     return this.strSubject;
+  }
+
+  public String toString() {
+    String aut = "";
+    for(int i=0; i<this.getAuthors().length; i++) {
+      if(i!=0) {
+        aut += ", ";
+      }
+      aut += this.getAuthors()[i];
+    }
+    return String.format("%s Text Book: %s(%d pages) by: %s", this.getSubject(),
+                                        this.getTitle(), this.getPages(), aut);
   }
 }

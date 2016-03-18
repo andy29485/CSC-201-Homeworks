@@ -8,7 +8,7 @@ public class Novel extends Book {
 
   public Novel() {
     super();
-    astrCharacters = {"Alice"};
+    astrCharacters = new String[] {"Alice"};
     this.setTitle("Through the Looking Glass");
     this.setAuthors(new String[] {"Lewis Carroll"});
   }
@@ -29,10 +29,29 @@ public class Novel extends Book {
         return;
     }
     String[] tmp = new String[this.astrCharacters.length+1];
-    for(int i=0; i<this.astrCharacters; i++) {
+    for(int i=0; i<this.astrCharacters.length; i++) {
       tmp[i] = this.astrCharacters[i];
     }
     tmp[this.astrCharacters.length] = strCharacter;
     this.astrCharacters = tmp;
+  }
+
+  public String toString() {
+    String aut = "";
+    for(int i=0; i<this.getAuthors().length; i++) {
+      if(i!=0) {
+        aut += ", ";
+      }
+      aut += this.getAuthors()[i];
+    }
+    String chars = "";
+    for(int i=0; i<this.getCharacters().length; i++) {
+      if(i!=0) {
+        chars += ", ";
+      }
+      chars += this.getCharacters()[i];
+    }
+    return String.format("Novel: %s(%d pages) by: %s - chars: [%s]",
+                   this.getTitle(), this.getPages(), aut, chars);
   }
 }
