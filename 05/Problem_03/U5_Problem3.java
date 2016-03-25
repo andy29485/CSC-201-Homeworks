@@ -6,7 +6,7 @@
 /* Description:
  *   Write a program that displays four cards randomly selected from a deck of
  *     52 if the Refresh button is clicked, shown below. The card image files
- *     are named 1.png, 2.png ... 52.png and stored in the image/card directory.
+ *     are named 1.png, 2.png ... 52.png and stored in the card directory.
  *     All four cards are distinct and selected randomly. The card files are
  *     provided in Blackboard.
  *   Hint: You can select random cards by storing the numbers 1-52 to an array
@@ -14,7 +14,7 @@
  *     first four numbers in the array list as the file names for the image.
  *     The other way is to use the static shuffle method in the
  *     java.util.Collections class, for example:
- *     java.util.Collections.shuffle(list) where list is an array list.
+ *       java.util.Collections.shuffle(list) where list is an array list.
  *   - Create a class named CardRefreshButton extends Application.
  *   - Create a new array list, then use a for loop and add() method to add 52
  *     cards to the list.
@@ -42,32 +42,64 @@
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.text.Text;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.layout.Pane;
+import javafx.event.ActionEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class U5_Problem3 extends Application {
+  private List<String> astrCardNames = new ArrayList<String>();
+  private ImageView[]  cardViews     = new ImageView[4];
+
   public void start(Stage stage) {
     //set title
     stage.setTitle("Shuffling cards");
 
-    //create pane and string to display
-    Pane root = new Pane();
+    //create Pane and HBox to display
+    BorderPane root  = new BorderPane();
+    HBox       cards = new HBox();
 
-    //set the size of the panel
-    final int SIZE_X = 300;
-    final int SIZE_Y = 300;
+    //add cards to HBox
+    for(int i=0; i<4; i++) {
+      cardViews[i] = new ImageView();
+      cards.getChildren().add(cardViews[i]);
+    }
 
-    //TODO
+    //Setup and shuffle cards
+    for(int i=1; i<=52; i++) {
+      astrCardNames.add(String.format("card/%d.png", i));
+    }
+    this.shuffle(null);
 
-    //add pane to stage
-    stage.setScene(new Scene(root, SIZE_X, SIZE_Y));
+    //add HBox to Pane
+    root.setCenter(cards);
+
+    //create and add a shuffle button to the pane
+    Button bShuffle = new Button();
+    bShuffle.setText("Refresh");
+    bShuffle.setOnAction(this::shuffle);
+    root.setBottom(bShuffle);
+    root.setAlignment(bShuffle, javafx.geometry.Pos.CENTER);
+
+    //add Pane to stage
+    stage.setScene(new Scene(root));
 
     //make stage(window) apprear
     stage.show();
+  }
+
+  //will shuffle cards and set them to the imageViews
+  public void shuffle(ActionEvent event) {
+    java.util.Collections.shuffle(astrCardNames);
+    for(int i=0; i<4; i++) {
+      this.cardViews[i].setImage(new Image(this.astrCardNames.get(i)));
+    }
   }
 
   //No need for main method - it runs from automatically - however
