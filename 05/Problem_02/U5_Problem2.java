@@ -27,6 +27,9 @@
  *
  * Assumptions:
  *   - Characters will not be the name of the main class
+ *   - Java comments just means "comment your code" - not javadoc
+ *   - Since both bold and regular were specified as font fetures, I'll assume
+ *     that the second(regular) overwrites the first(bold)
  *
  * Pseudocode:
  *   1. The description is basically pseudocode
@@ -35,26 +38,56 @@
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.text.Text
-import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 
-public class U5_Problem2 {
+public class U5_Problem2 extends Application {
   public void start(Stage stage) {
     //set title
     stage.setTitle("Characters around circle");
 
+    //create pane and string to display
     String strCircular = "Welcome to Java";
+    Pane root = new Pane();
 
-    //Create panels
-    StackPane root = new StackPane();
+    //set the size of the panel
+    final int SIZE_X = 300;
+    final int SIZE_Y = 300;
 
-    //add text to panel
-    root1.getChildren().add(b1);
+    //no suitable constructor found for Font(String,FontPosture,double)
+    //Font font = new Font("Times New Roman", FontPosture.REGULAR, 35.);
+    //javafx is stupid - I should not have to do this in this way
+    //See assumptions on why regular was used
+    Font font = Font.font("Times New Roman", FontPosture.REGULAR, 35);
 
-    //add panel to stage
-    stage.setScene(new Scene(root, 300, 200));
+    for(int i=0; i<strCircular.length(); i++) {
+      String c = strCircular.substring(i, i+1);//extract single letter as string
+
+      //Use trig to figure out location of each char
+      double angle = 2.0*i*Math.PI/strCircular.length();
+      double tmpX  = SIZE_Y/3 * Math.cos(angle) + SIZE_X/2;//use trig to offset
+      double tmpY  = SIZE_Y/3 * Math.sin(angle) + SIZE_Y/2;// from origin
+
+      //Create text for each char in string(location, text, font, rotation)
+      Text tmp = new Text(tmpX, tmpY, c);
+      tmp.setFont(font);
+      tmp.setRotate(90+angle*180/Math.PI);//some use radians, some use degrees
+                                          //  the 90 is to ensure that the first
+                                          //  letter is sideways
+
+      //System.out.printf("(%5.2f, %5.2f) %d deg \"%s\"\n",
+      //                  tmp.getX(), tmp.getY(), tmp.getRotate(), c);
+
+      //add letter to pane
+      root.getChildren().add(tmp);
+    }
+
+    //add pane to stage
+    stage.setScene(new Scene(root, SIZE_X, SIZE_Y));
 
     //make stage(window) apprear
     stage.show();
