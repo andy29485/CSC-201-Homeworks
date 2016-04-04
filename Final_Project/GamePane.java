@@ -67,7 +67,7 @@ public class GamePane extends Pane {
           }
         }
         if(lives <= 0) {
-          //TODO - save score
+          ScoresPane.save(score);
           GamePane.this.s.switchTo("scores");
         }
         for(int i=0; i<astroids.size(); i++) {
