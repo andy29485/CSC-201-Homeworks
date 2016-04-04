@@ -8,40 +8,74 @@ import javafx.scene.paint.Color;
 import javafx.scene.layout.Pane;
 
 public abstract class GameObject {
-  private   double x;
-  private   double y;
-  private   double dx;
-  private   double dy;
-  protected Shape  shape;
+  private   double  x;
+  private   double  y;
+  private   double  dx;
+  private   double  dy;
+  private   double  angle;
+  private   Shape[] shapes;
 
   public GameObject() {
     this.x     = 0;
     this.y     = 0;
     this.dx    = 0;
     this.dy    = 0;
-    this.shape = new Polygon();
-
-    this.shape.setStroke(Color.WHITE);
-    this.shape.setFill(Color.TRANSPARENT);
+    this.angle = 0;
+    this.shapes = new Polygon[5];
+    for(int i=0; i<this.shapes.length; i++) {
+      this.shapes[i] = new Polygon();
+  	  this.shapes[i].setStroke(Color.WHITE);
+  	  this.shapes[i].setFill(Color.TRANSPARENT);
+  	}
   }
 
-  public GameObject(double x, double y, double dx, double dy, Shape shape) {
+  public GameObject(double x, double y, double dx, double dy, String shape) {
     this.x     = x;
     this.y     = y;
     this.dx    = dx;
     this.dy    = dy;
-    this.shape = shape;
-
-    this.shape.setStroke(Color.WHITE);
-    this.shape.setFill(Color.TRANSPARENT);
+    this.angle = 0;
+    this.shapes = new Shape[5];
+    
+    for(int i=0; i<this.shapes.length; i++) {
+	  if(shape.equalsIgnoreCase("polygon"))
+	    this.shapes[i] = new Polygon();
+	  if(shape.equalsIgnoreCase("circle"))
+	   this.shapes[i] = new Circle(1);
+	  else
+	   this.shapes[i] = new Polygon();
+	  this.shapes[i].setStroke(Color.WHITE);
+	  this.shapes[i].setFill(Color.TRANSPARENT);
+	}
   }
 
   public void add(Pane p) {
-    p.getChildren().add(this.shape);
+    for(Shape shape : this.shapes) {
+	  p.getChildren().add(shape);
+    }
   }
 
   public void remove(Pane p) {
-    p.getChildren().remove(this.shape);
+    for(Shape shape : this.shapes) {
+      p.getChildren().remove(shape);
+    }
+  }
+
+  public void setAngle(double angle) {
+    this.angle = angle;
+
+    while(this.angle > 360)
+      this.angle -= 360;
+    while(this.angle < 0)
+      this.angle += 360;
+  }
+
+  public double getAngle() {
+    return this.angle*Math.PI/180;
+  }
+
+  public double getAngleDeg() {
+    return this.angle;
   }
 
   public void move() {
@@ -64,9 +98,21 @@ public abstract class GameObject {
     else if(this.y > frameY) {
       this.y -= frameY;
     }
-
-    shape.setLayoutX(this.x);
-    shape.setLayoutY(this.y);
+    this.shapes[0].setRotate(this.angle);
+    this.shapes[0].setLayoutX(this.x);
+    this.shapes[0].setLayoutY(this.y);
+    this.shapes[1].setRotate(this.angle);
+    this.shapes[1].setLayoutX(this.x);
+    this.shapes[1].setLayoutY(this.y - frameX);
+    this.shapes[2].setRotate(this.angle);
+    this.shapes[1].setLayoutX(this.x);
+    this.shapes[2].setLayoutY(this.y + frameX);
+    this.shapes[3].setRotate(this.angle);
+    this.shapes[3].setLayoutX(this.x + frameY);
+    this.shapes[3].setLayoutY(this.y);
+    this.shapes[4].setRotate(this.angle);
+    this.shapes[4].setLayoutX(this.x - frameY);
+    this.shapes[4].setLayoutY(this.y);
   }
 
   public void setX(double x) {
@@ -101,13 +147,19 @@ public abstract class GameObject {
     return this.dx;
   }
 
-  public Shape getShape() {
-    return shape;
+  public Shape[] getShapes() {
+    return this.shapes;
   }
 
   public boolean checkCollision(GameObject obj) {
-    Shape a = this.shape;
-    Shape b = obj.getShape();
-    return a.getBoundsInParent().intersects(b.getBoundsInParent());
+    Shape[] aa = this.shapes;
+    Shape[] ab = obj.getShapes();
+    for(Shape a : aa) {
+      for(Shape b : ab) {
+        if(a.getBoundsInParent().intersects(b.getBoundsInParent()))
+    	  return true;
+      }
+    }
+    return false;
   }
 }

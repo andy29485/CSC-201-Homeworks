@@ -4,7 +4,6 @@
 
 import javafx.application.Application;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.event.*;
@@ -24,8 +23,8 @@ public class AstroidsDriver extends Application {
   }
 
   static class PaneSwitcher implements Switcher {
-    public static final int SIZE_X = 500;
-    public static final int SIZE_Y = 500;
+    public static final int SIZE_X = 700;
+    public static final int SIZE_Y = 700;
 
     public void switchTo(String pane) {
       if(pane.equalsIgnoreCase("menu"))
@@ -34,11 +33,17 @@ public class AstroidsDriver extends Application {
         GamePane game = new GamePane(this);
         Scene tmp = new Scene(game, SIZE_X, SIZE_Y);
         tmp.setOnKeyPressed(new EventHandler<KeyEvent>() {
-          @Override
-          public void handle(KeyEvent event) {
-            game.onKeyPress(event);
-          }
-        });
+            @Override
+            public void handle(KeyEvent event) {
+              game.onKeyPress(event);
+            }
+          });
+        tmp.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+              game.onKeyRelease(event);
+            }
+          });
         mainStage.setScene(tmp);
       }
       else if(pane.equalsIgnoreCase("scores"))

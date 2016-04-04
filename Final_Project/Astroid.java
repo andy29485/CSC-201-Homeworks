@@ -6,59 +6,32 @@ import javafx.scene.shape.*;
 
 public class Astroid extends GameObject {
   private int    size;
-  private double angle;
   private double dangle;
 
   public Astroid() {
-    super(Math.random()*(AstroidsDriver.PaneSwitcher.SIZE_X-50)+10,
-          Math.random()*(AstroidsDriver.PaneSwitcher.SIZE_Y-50)+10,
-          Math.random()*6-3, Math.random()*6-3, new Polygon());
-
-    this.size   = 5;
-    this.angle  = 0;
-    this.dangle = Math.random()*4-2;
-
-    Double[] points = new Double[this.size*4];
-    for(int i=0; i<points.length/2; i++) {
-      double angle  = i*Math.PI*4.0/points.length;
-      points[i*2]   = Math.cos(angle)*(Math.random()*5+3)*this.size+30;
-      points[i*2+1] = Math.sin(angle)*(Math.random()*5+3)*this.size+30;
-    }
-    ((Polygon)(this.shape)).getPoints().addAll(points);
+    this(5);
   }
 
   public Astroid(int size) {
-    super(Math.random()*(AstroidsDriver.PaneSwitcher.SIZE_X-50)+10,
-          Math.random()*(AstroidsDriver.PaneSwitcher.SIZE_Y-50)+10,
-          Math.random()*6-3, Math.random()*6-3, new Polygon());
-
-    this.size = size;
-    this.angle  = 0;
-    this.dangle = Math.random()*4-2;
-
-    Double[] points = new Double[this.size*4];
-    for(int i=0; i<points.length/2; i++) {
-      double angle  = i*Math.PI*4.0/points.length;
-      points[i*2]   = Math.cos(angle)*(Math.random()*5+3)*this.size+30;
-      points[i*2+1] = Math.sin(angle)*(Math.random()*5+3)*this.size+30;
-    }
-    ((Polygon)(this.shape)).getPoints().addAll(points);
+    this(Math.random()*(AstroidsDriver.PaneSwitcher.SIZE_X-50)+10,
+         Math.random()*(AstroidsDriver.PaneSwitcher.SIZE_Y-50)+10,
+         size);
   }
 
   public Astroid(double x, double y, int size) {
-    super(x, y, Math.random()*6-3, Math.random()*6-3, new Polygon());
+    super(x, y, Math.random()*3-1.5, Math.random()*3-1.5, "polygon");
 
     this.size = size;
-    this.angle  = 0;
     this.dangle = Math.random()*4-2;
 
-    Double[] points = new Double[this.size*4];
+    Double[] points = new Double[(int)(Math.random()*6+this.size*4)];
     for(int i=0; i<points.length/2; i++) {
       double angle  = i*Math.PI*4.0/points.length;
       points[i*2]   = Math.cos(angle)*(Math.random()*5+3)*this.size+30;
       points[i*2+1] = Math.sin(angle)*(Math.random()*5+3)*this.size+30;
     }
-    ((Polygon)(this.shape)).getPoints().addAll(points);
+    for(Shape tmp : this.getShapes())
+      ((Polygon)tmp).getPoints().addAll(points);
   }
 
   public Astroid[] destroy() {
@@ -79,7 +52,6 @@ public class Astroid extends GameObject {
   @Override
   public void move() {
     super.move();
-    this.angle += this.dangle;
-    this.shape.setRotate(this.angle);
+    this.setAngle(this.getAngleDeg()+this.dangle);
   }
 }

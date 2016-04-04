@@ -5,9 +5,7 @@
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.control.Button;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.geometry.Insets;
 
 public class MenuPane extends FlowPane {
   public MenuPane(Switcher s) {

@@ -21,6 +21,8 @@ public class GamePane extends Pane {
   private long          nanoNow;
   private boolean       canFire;
   private Text          info;
+  private double        dm;
+  private double        da;
 
   public GamePane(Switcher s) {
     super();
@@ -38,6 +40,8 @@ public class GamePane extends Pane {
     this.lives    = 4;
     this.level    = 0;
     this.score    = 0;
+    this.dm       = 0;
+    this.da       = 0;
     this.info     = new Text(AstroidsDriver.PaneSwitcher.SIZE_X-300, 22, "");
 
     p.add(this);
@@ -49,7 +53,22 @@ public class GamePane extends Pane {
 
     new AnimationTimer() {
       public void handle(long now) {
-        nanoNow = now;
+        double maxSpeed = 8;
+	    double dy = p.getdy();
+	    double dx = p.getdx();
+	    
+	    if(dm != 0) {
+	      dy += Math.sin(p.getAngle())*dm/Math.abs(Math.abs(dy)>.7 ? dy : 1);
+	      dx += Math.cos(p.getAngle())*dm/Math.abs(Math.abs(dx)>.7 ? dx : 1);
+		    if(dy > -1*maxSpeed && dy < maxSpeed &&
+		       dx > -1*maxSpeed && dx < maxSpeed) {
+		      p.setdy(dy);
+		      p.setdx(dx);
+		    }
+	    }
+	    p.setAngle(p.getAngle()/Math.PI*180+da);
+    	    
+    	nanoNow = now;
         if(!canFire &&
           (now > lastFire+350000000l) || p.getBullets().size() == 0) {
             canFire  = true;
@@ -77,17 +96,22 @@ public class GamePane extends Pane {
           if(a.checkCollision(p)) {
             p.reset();
             lives--;
-            for(Astroid tmp : astroids) {
-              while(tmp.checkCollision(p))
-                tmp.move();
+            for(int j=0; j<astroids.size(); j++) {
+              Astroid tmp = astroids.get(j);
+              if(tmp.checkCollision(p)) {
+                tmp.destroy();
+                tmp.remove(GamePane.this);
+                astroids.remove(tmp);
+                j--;
+              }
             }
           }
 
           for(int j=0; j<p.getBullets().size(); j++) {
             Bullet b = p.getBullets().get(j);
             if(a.checkCollision(b)) {
-              GamePane.this.getChildren().remove(b.getShape());
-              GamePane.this.getChildren().remove(a.getShape());
+              a.remove(GamePane.this);
+              b.remove(GamePane.this);
               astroids.remove(i);
               p.getBullets().remove(j);
               i--;
@@ -109,33 +133,32 @@ public class GamePane extends Pane {
   }
 
   public void onKeyPress(KeyEvent event) {
-    double moveStep = .9;
-    double maxSpeed = 10;
-    double dy = p.getdy();
-    double dx = p.getdx();
+    double moveStep = .3;
+    double turnStep = 8;
     if(event.getCode() == KeyCode.UP) {
-      dy += Math.sin(p.getAngle())*moveStep/Math.abs(Math.abs(dy)>.7 ? dy : 1);
-      dx += Math.cos(p.getAngle())*moveStep/Math.abs(Math.abs(dx)>.7 ? dx : 1);
+      dm = moveStep;
     }
     if(event.getCode() == KeyCode.DOWN) {
-      dy -= Math.sin(p.getAngle())*moveStep/Math.abs(Math.abs(dy)>.7 ? dy : 1);
-      dx -= Math.cos(p.getAngle())*moveStep/Math.abs(Math.abs(dx)>.7 ? dx : 1);
+      dm = moveStep * -1;
     }
     if(event.getCode() == KeyCode.LEFT) {
-      p.setAngle(p.getAngle()/Math.PI*180-13);
+      da = turnStep * -1;
     }
     if(event.getCode() == KeyCode.RIGHT) {
-      p.setAngle(p.getAngle()/Math.PI*180+13);
+      da = turnStep;
     }
     if(event.getCode() == KeyCode.SPACE && canFire) {
       p.shoot(GamePane.this);
       lastFire = nanoNow;
       canFire  = false;
     }
-    if(dy > -1*maxSpeed && dy < maxSpeed &&
-       dx > -1*maxSpeed && dx < maxSpeed) {
-      p.setdy(dy);
-      p.setdx(dx);
+  }
+  public void onKeyRelease(KeyEvent event) {
+    if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) {
+      dm = 0;
+    }
+    if(event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
+      da = 0;
     }
   }
 }

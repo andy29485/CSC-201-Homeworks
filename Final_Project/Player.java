@@ -8,18 +8,17 @@ import java.util.*;
 
 public class Player extends GameObject {
   private List<Bullet> bullets;
-  private double       angle;
 
   public Player() {
     super();
     this.bullets = new ArrayList<Bullet>();
-    ((Polygon)(this.shape)).getPoints().addAll(new Double[]{0.0, 0.0,
-                                                            20.0, 5.0,
-                                                            0.0, 10.0,
-                                                            6.0, 5.0 });
+    for(Shape tmp : this.getShapes())
+        ((Polygon)tmp).getPoints().addAll(new Double[]{0.0, 0.0,
+                                                       20.0, 5.0,
+                                                       0.0, 10.0,
+                                                       6.0, 5.0 });
     this.setX(AstroidsDriver.PaneSwitcher.SIZE_X/2);
     this.setY(AstroidsDriver.PaneSwitcher.SIZE_Y/2);
-    this.angle = 0;
   }
 
   public void shoot(Pane p) {
@@ -34,34 +33,21 @@ public class Player extends GameObject {
     return bullets;
   }
 
-  public void setAngle(double angle) {
-    this.angle = angle;
-
-    while(this.angle > 360)
-      this.angle -= 360;
-    while(this.angle < 0)
-      this.angle += 360;
-  }
-
-  public double getAngle() {
-    return this.angle*Math.PI/180;
-  }
-
   public void reset() {
     this.setX(AstroidsDriver.PaneSwitcher.SIZE_X/2);
     this.setY(AstroidsDriver.PaneSwitcher.SIZE_Y/2);
-    this.angle = 0;
+    this.setdx(0);
+    this.setdy(0);
+    this.setAngle(0);
   }
 
   public void move(Pane p) {
-    this.shape.setRotate(this.angle);
-
     super.move();
 
     for(int i=0; i< bullets.size(); i++) {
       Bullet b = bullets.get(i);
       if(b.isDone()) {
-        p.getChildren().remove(b.getShape());
+        b.remove(p);
         this.bullets.remove(b);
         i--;
       }

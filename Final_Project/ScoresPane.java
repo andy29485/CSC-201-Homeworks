@@ -14,7 +14,7 @@ public class ScoresPane extends Pane {
     super();
     //TODO - table(name score date) (button)?
     //if name empty: set name as text box and add save button
-    //when button pushed, save and refresh row !table
+    //when button pushed, save and refresh table
   }
 
   public static void save(long score) {
