@@ -40,6 +40,10 @@ public abstract class GameObject {
     p.getChildren().add(this.shape);
   }
 
+  public void remove(Pane p) {
+    p.getChildren().remove(this.shape);
+  }
+
   public void move() {
     double frameX = AstroidsDriver.PaneSwitcher.SIZE_X;
     double frameY = AstroidsDriver.PaneSwitcher.SIZE_Y;

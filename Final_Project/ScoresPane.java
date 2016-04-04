@@ -23,7 +23,7 @@ public class ScoresPane extends Pane {
       long   date = System.currentTimeMillis();
 
       int i = scores.size();
-      while(scores.get(--i).score < score);//TODO- may need fixing
+      while(--i>=0 && scores.get(i).score < score);
 
       Score tmp = new Score();
       tmp.name  = name;
@@ -32,16 +32,20 @@ public class ScoresPane extends Pane {
 
       scores.add(i+1, tmp);
 
-      try {
-        RandomAccessFile raf = new RandomAccessFile(SCORE_FILE, "rw");
-        for(i=0; i<(scores.size()<10 ? scores.size() : 10); i++) {
-          raf.writeLong(scores.get(i).score);
-          raf.writeLong(scores.get(i).date);
-          raf.writeChars(scores.get(i).name+"\n");
-        }
-        raf.close();
-      } catch(Exception e) {}
+      save(scores);
     }
+  }
+
+  public static void save(List<Score> scores) {
+    try {
+      RandomAccessFile raf = new RandomAccessFile(SCORE_FILE, "rw");
+      for(int i=0; i<(scores.size()<10 ? scores.size() : 10); i++) {
+        raf.writeLong(scores.get(i).score);
+        raf.writeLong(scores.get(i).date);
+        raf.writeChars(scores.get(i).name+"\n");
+      }
+      raf.close();
+    } catch(Exception e) {}
   }
 
   public static List<Score> load() {

@@ -96,11 +96,9 @@ public class GamePane extends Pane {
               Astroid[] tmp = a.destroy();
               score += a.getScore();
 
-              if(tmp != null) {
-                for(Astroid tmp_a : tmp) {
-                  astroids.add(tmp_a);
-                  tmp_a.add(GamePane.this);
-                }
+              for(Astroid tmp_a : tmp) {
+                astroids.add(tmp_a);
+                tmp_a.add(GamePane.this);
               }
             }
           }
