@@ -156,7 +156,7 @@ public abstract class GameObject {
     Shape[] ab = obj.getShapes();
     for(Shape a : aa) {
       for(Shape b : ab) {
-        if(a.getBoundsInParent().intersects(b.getBoundsInParent()))
+        if(!Shape.intersect(a, b).getLayoutBounds().isEmpty())
     	  return true;
       }
     }
