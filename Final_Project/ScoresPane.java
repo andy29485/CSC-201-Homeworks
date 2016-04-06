@@ -2,12 +2,17 @@
 //Date:    2016-04-03
 //Final Project
 
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 import java.io.RandomAccessFile;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class ScoresPane extends Pane {
+public class ScoresPane extends GridPane {
   public static final String SCORE_FILE = "scores.db";
 
   public ScoresPane(Switcher s) {
@@ -15,6 +20,42 @@ public class ScoresPane extends Pane {
     //TODO - table(name score date) (button)?
     //if name empty: set name as text box and add save button
     //when button pushed, save and refresh table
+
+    this.setHgap(30);
+
+    this.add(new Label("Top Scores"), 0, 0);
+    this.add(new Label("Name"),  0, 1);
+    this.add(new Label("Score"), 1, 1);
+    this.add(new Label("Date"),  2, 1);
+
+    List<Score> scores = load();
+    int i = 1;
+
+    for(Score score : scores) {
+      i++;
+      if(score.name.length()>0)
+        this.add(new Label(score.name),  0, i);
+      else {
+        TextField tmpf = new TextField();
+        tmpf.setPromptText("Enter Name");
+        this.add(tmpf,  0, i);
+
+        int j = i;
+
+        Button tmpb = new Button();
+        tmpb.setText("Save");
+        tmpb.setOnAction(e -> { score.name = tmpf.getText();
+                                this.getChildren().remove(tmpb);
+                                this.getChildren().remove(tmpf);
+                                this.add(new Label(score.name),  0, j);
+                                save(scores);});
+        this.add(tmpb,  3, i);
+      }
+      this.add(new Label(String.format("%,d", score.score)), 1, i);
+      this.add(new Label(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(
+          new Date(score.date))),  2, i);
+    }
+
   }
 
   public static void save(long score) {
@@ -22,7 +63,7 @@ public class ScoresPane extends Pane {
 
     if(scores.size() < 10 || scores.get(scores.size()-1).score < score) {
       //TODO - get name
-      String name = "TODO";
+      String name = "";
       long   date = System.currentTimeMillis();
 
       int i = scores.size();

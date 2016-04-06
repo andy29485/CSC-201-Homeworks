@@ -17,8 +17,8 @@ public class Player extends GameObject {
                                                        20.0, 5.0,
                                                        0.0, 10.0,
                                                        6.0, 5.0 });
-    this.setX(AstroidsDriver.PaneSwitcher.SIZE_X/2);
-    this.setY(AstroidsDriver.PaneSwitcher.SIZE_Y/2);
+    this.setX(AstroidsDriver.SIZE_X/2);
+    this.setY(AstroidsDriver.SIZE_Y/2);
   }
 
   public void shoot(Pane p) {
@@ -34,8 +34,8 @@ public class Player extends GameObject {
   }
 
   public void reset() {
-    this.setX(AstroidsDriver.PaneSwitcher.SIZE_X/2);
-    this.setY(AstroidsDriver.PaneSwitcher.SIZE_Y/2);
+    this.setX(AstroidsDriver.SIZE_X/2);
+    this.setY(AstroidsDriver.SIZE_Y/2);
     this.setdx(0);
     this.setdy(0);
     this.setAngle(0);

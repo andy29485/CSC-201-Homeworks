@@ -42,7 +42,7 @@ public class GamePane extends Pane {
     this.score    = 0;
     this.dm       = 0;
     this.da       = 0;
-    this.info     = new Text(AstroidsDriver.PaneSwitcher.SIZE_X-300, 22, "");
+    this.info     = new Text(AstroidsDriver.SIZE_X-300, 22, "");
 
     p.add(this);
     this.getChildren().add(info);
@@ -53,33 +53,35 @@ public class GamePane extends Pane {
 
     new AnimationTimer() {
       public void handle(long now) {
-        double maxSpeed = 8;
+        double maxSpeed = 11;
 	    double dy = p.getdy();
 	    double dx = p.getdx();
-	    
+
 	    if(dm != 0) {
-	      dy += Math.sin(p.getAngle())*dm/Math.abs(Math.abs(dy)>.7 ? dy : 1);
-	      dx += Math.cos(p.getAngle())*dm/Math.abs(Math.abs(dx)>.7 ? dx : 1);
+	      dy += Math.sin(p.getAngle())*dm;
+	      dx += Math.cos(p.getAngle())*dm;
 		    if(dy > -1*maxSpeed && dy < maxSpeed &&
 		       dx > -1*maxSpeed && dx < maxSpeed) {
 		      p.setdy(dy);
 		      p.setdx(dx);
 		    }
 	    }
-	    p.setAngle(p.getAngle()/Math.PI*180+da);
-    	    
+	    if(da != 0)
+	      p.setAngle(p.getAngle()/Math.PI*180+da);
+
     	nanoNow = now;
         if(!canFire &&
-          (now > lastFire+350000000l) || p.getBullets().size() == 0) {
+          (now > lastFire+300000000) || p.getBullets().size() == 0) {
             canFire  = true;
             lastFire = now;
         }
-        info.setText(String.format("Lives %d | Level %d | Score:%,d",
+        info.setText(String.format("Lives %d | Level %d | Score: %,d",
                                    lives, level, score));
         if(astroids.size() == 0) {
           score += 100 * level;
           level++;
-          for(int i=0; i<=level; i++) {//make `level+1` astroids at the start
+          p.reset();
+          for(int i=0; i<=level; i++) {//make `level+1` asteroids at the start
             Astroid tmp = new Astroid();
             astroids.add(tmp);
             tmp.add(GamePane.this);
@@ -89,6 +91,7 @@ public class GamePane extends Pane {
           ScoresPane.save(score);
           GamePane.this.s.switchTo("scores");
         }
+        astroid_loop:
         for(int i=0; i<astroids.size(); i++) {
           Astroid a = astroids.get(i);
           a.move();
@@ -99,12 +102,12 @@ public class GamePane extends Pane {
             for(int j=0; j<astroids.size(); j++) {
               Astroid tmp = astroids.get(j);
               if(tmp.checkCollision(p)) {
-                tmp.destroy();
                 tmp.remove(GamePane.this);
                 astroids.remove(tmp);
                 j--;
               }
             }
+            break astroid_loop;
           }
 
           for(int j=0; j<p.getBullets().size(); j++) {
@@ -112,15 +115,14 @@ public class GamePane extends Pane {
             if(a.checkCollision(b)) {
               a.remove(GamePane.this);
               b.remove(GamePane.this);
-              astroids.remove(i);
-              p.getBullets().remove(j);
+              astroids.remove(a);
+              p.getBullets().remove(b);
               i--;
               j--;
 
-              Astroid[] tmp = a.destroy();
               score += a.getScore();
 
-              for(Astroid tmp_a : tmp) {
+              for(Astroid tmp_a : a.destroy()) {
                 astroids.add(tmp_a);
                 tmp_a.add(GamePane.this);
               }
@@ -153,6 +155,7 @@ public class GamePane extends Pane {
       canFire  = false;
     }
   }
+
   public void onKeyRelease(KeyEvent event) {
     if(event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) {
       dm = 0;

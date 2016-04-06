@@ -13,8 +13,8 @@ public class Astroid extends GameObject {
   }
 
   public Astroid(int size) {
-    this(Math.random()*(AstroidsDriver.PaneSwitcher.SIZE_X-50)+10,
-         Math.random()*(AstroidsDriver.PaneSwitcher.SIZE_Y-50)+10,
+    this(Math.random()*(AstroidsDriver.SIZE_X-50)+10,
+         Math.random()*(AstroidsDriver.SIZE_Y-50)+10,
          size);
   }
 

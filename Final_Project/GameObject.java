@@ -36,7 +36,7 @@ public abstract class GameObject {
     this.dy    = dy;
     this.angle = 0;
     this.shapes = new Shape[5];
-    
+
     for(int i=0; i<this.shapes.length; i++) {
 	  if(shape.equalsIgnoreCase("polygon"))
 	    this.shapes[i] = new Polygon();
@@ -79,8 +79,8 @@ public abstract class GameObject {
   }
 
   public void move() {
-    double frameX = AstroidsDriver.PaneSwitcher.SIZE_X;
-    double frameY = AstroidsDriver.PaneSwitcher.SIZE_Y;
+    double frameX = AstroidsDriver.SIZE_X;
+    double frameY = AstroidsDriver.SIZE_Y;
 
     this.x += this.dx;
     this.y += this.dy;
@@ -152,13 +152,10 @@ public abstract class GameObject {
   }
 
   public boolean checkCollision(GameObject obj) {
-    Shape[] aa = this.shapes;
     Shape[] ab = obj.getShapes();
-    for(Shape a : aa) {
-      for(Shape b : ab) {
-        if(!Shape.intersect(a, b).getLayoutBounds().isEmpty())
-    	  return true;
-      }
+    for(Shape b : ab) {
+      if(!Shape.intersect(this.shapes[0], b).getLayoutBounds().isEmpty())
+    	return true;
     }
     return false;
   }

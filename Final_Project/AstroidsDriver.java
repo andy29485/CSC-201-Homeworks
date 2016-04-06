@@ -9,7 +9,13 @@ import javafx.stage.Stage;
 import javafx.event.*;
 
 public class AstroidsDriver extends Application {
+  public static final int SIZE_X = 700;
+  public static final int SIZE_Y = 700;
+
   private static Stage mainStage;
+  private static Scene menu;
+  private static Scene game;
+  private static Scene scores;
 
   public void start(Stage stage) {
     stage.setTitle("Astroids");
@@ -17,37 +23,38 @@ public class AstroidsDriver extends Application {
 
     PaneSwitcher ps = new PaneSwitcher();
 
+    GamePane g_pane = new GamePane(ps);
+
+    menu   = new Scene(new MenuPane(ps), SIZE_X, SIZE_Y);
+    game   = new Scene(g_pane, SIZE_X, SIZE_Y);
+    scores = new Scene(new ScoresPane(ps), SIZE_X, SIZE_Y);
+
+    game.setOnKeyPressed(new EventHandler<KeyEvent>() {
+      @Override
+      public void handle(KeyEvent event) {
+        g_pane.onKeyPress(event);
+      }
+    });
+    game.setOnKeyReleased(new EventHandler<KeyEvent>() {
+        @Override
+        public void handle(KeyEvent event) {
+          g_pane.onKeyRelease(event);
+        }
+      });
+
     ps.switchTo("menu");
 
     stage.show();
   }
 
   static class PaneSwitcher implements Switcher {
-    public static final int SIZE_X = 700;
-    public static final int SIZE_Y = 700;
-
     public void switchTo(String pane) {
       if(pane.equalsIgnoreCase("menu"))
-        mainStage.setScene(new Scene(new MenuPane(this), SIZE_X, SIZE_Y));
-      else if(pane.equalsIgnoreCase("game")) {
-        GamePane game = new GamePane(this);
-        Scene tmp = new Scene(game, SIZE_X, SIZE_Y);
-        tmp.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-              game.onKeyPress(event);
-            }
-          });
-        tmp.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-              game.onKeyRelease(event);
-            }
-          });
-        mainStage.setScene(tmp);
-      }
+        mainStage.setScene(menu);
+      else if(pane.equalsIgnoreCase("game"))
+        mainStage.setScene(game);
       else if(pane.equalsIgnoreCase("scores"))
-        mainStage.setScene(new Scene(new ScoresPane(this), SIZE_X, SIZE_Y));
+        mainStage.setScene(scores);
     }
   }
 }
