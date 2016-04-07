@@ -1,57 +1,49 @@
-//Name:    Andriy Zasypkin
-//Date:    2016-04-03
-//Final Project
 
+// Name: Andriy Zasypkin
+// Date: 2016-04-03
+// Final Project
 
-import javafx.scene.shape.*;
-import javafx.scene.paint.Color;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Shape;
 
 public abstract class GameObject {
-  private   double  x;
-  private   double  y;
-  private   double  dx;
-  private   double  dy;
-  private   double  angle;
-  private   Shape[] shapes;
+  private double  x;
+  private double  y;
+  private double  dx;
+  private double  dy;
+  private double  angle;
+  private Shape[] shapes;
 
   public GameObject() {
-    this.x     = 0;
-    this.y     = 0;
-    this.dx    = 0;
-    this.dy    = 0;
-    this.angle = 0;
-    this.shapes = new Polygon[5];
-    for(int i=0; i<this.shapes.length; i++) {
-      this.shapes[i] = new Polygon();
-  	  this.shapes[i].setStroke(Color.WHITE);
-  	  this.shapes[i].setFill(Color.TRANSPARENT);
-  	}
+    this(0, 0, 0, 0, "polygon");
   }
 
   public GameObject(double x, double y, double dx, double dy, String shape) {
-    this.x     = x;
-    this.y     = y;
-    this.dx    = dx;
-    this.dy    = dy;
+    this.x = x;
+    this.y = y;
+    this.dx = dx;
+    this.dy = dy;
     this.angle = 0;
     this.shapes = new Shape[5];
 
-    for(int i=0; i<this.shapes.length; i++) {
-	  if(shape.equalsIgnoreCase("polygon"))
-	    this.shapes[i] = new Polygon();
-	  if(shape.equalsIgnoreCase("circle"))
-	   this.shapes[i] = new Circle(1);
-	  else
-	   this.shapes[i] = new Polygon();
-	  this.shapes[i].setStroke(Color.WHITE);
-	  this.shapes[i].setFill(Color.TRANSPARENT);
-	}
+    for(int i = 0; i < this.shapes.length; i++) {
+      if(shape.equalsIgnoreCase("polygon"))
+        this.shapes[i] = new Polygon();
+      if(shape.equalsIgnoreCase("circle"))
+        this.shapes[i] = new Circle(1.5);
+      else
+        this.shapes[i] = new Polygon();
+      this.shapes[i].setStroke(Color.WHITE);
+      this.shapes[i].setFill(Color.TRANSPARENT);
+    }
   }
 
   public void add(Pane p) {
     for(Shape shape : this.shapes) {
-	  p.getChildren().add(shape);
+      p.getChildren().add(shape);
     }
   }
 
@@ -71,7 +63,7 @@ public abstract class GameObject {
   }
 
   public double getAngle() {
-    return this.angle*Math.PI/180;
+    return this.angle * Math.PI / 180;
   }
 
   public double getAngleDeg() {
@@ -155,7 +147,7 @@ public abstract class GameObject {
     Shape[] ab = obj.getShapes();
     for(Shape b : ab) {
       if(!Shape.intersect(this.shapes[0], b).getLayoutBounds().isEmpty())
-    	return true;
+        return true;
     }
     return false;
   }
