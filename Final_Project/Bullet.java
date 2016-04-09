@@ -2,6 +2,8 @@
 // Date: 2016-04-03
 // Final Project
 
+package Final_Project;
+
 public class Bullet extends GameObject {
   public static final int BULLET_LIFE = 50;
   public static final int LIFE_DRAIN  = 1;

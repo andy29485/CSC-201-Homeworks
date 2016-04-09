@@ -1,11 +1,13 @@
-//Name:    Andriy Zasypkin
-//Date:    2016-04-03
-//Final Project
+// Name: Andriy Zasypkin
+// Date: 2016-04-03
+// Final Project
 
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.control.Button;
+package Final_Project;
+
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 
 public class MenuPane extends FlowPane {
   public MenuPane(Switcher s) {
@@ -13,7 +15,7 @@ public class MenuPane extends FlowPane {
 
     VBox vb = new VBox();
 
-    Button playButton   = new Button();
+    Button playButton = new Button();
     playButton.setText("Play");
     playButton.setOnAction(e -> s.switchTo("game"));
 
@@ -21,7 +23,7 @@ public class MenuPane extends FlowPane {
     scoresButton.setText("Scores");
     scoresButton.setOnAction(e -> s.switchTo("scores"));
 
-    Button exitButton   = new Button();
+    Button exitButton = new Button();
     exitButton.setText("Exit");
     exitButton.setOnAction(e -> System.exit(0));
 

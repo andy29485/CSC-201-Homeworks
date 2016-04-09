@@ -1,7 +1,8 @@
-
 // Name: Andriy Zasypkin
 // Date: 2016-04-03
 // Final Project
+
+package Final_Project;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
