@@ -1,5 +1,9 @@
 package unit_06.problem_03;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 // Name: Andriy Zasypkin
 // Date: 2016-03-09
 // Unit: 04
@@ -17,14 +21,28 @@ package unit_06.problem_03;
  *     entered on the keyboard.
  *
  * Assumptions:
- *   - TODO
+ *   - Both the encoded and decoded versions of the string will be printed
  *
  * Pseudocode:
  *   1. TODO
  */
+
 public class U6_Problem3 {
-  public static void main(String[] args) {
-    // TODO
+  public static void main(String[] args) throws IOException {
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    SubstitutionCipher sub = new SubstitutionCipher(3);
+    ShuffleCipher shuf = new ShuffleCipher(5);
+
+    System.out.print("Enter a string: ");
+    String strPlain = input.readLine();
+
+    System.out.printf("SubstitutionCipher encode: %s\n", sub.encode(strPlain));
+    System.out.printf("SubstitutionCipher decode: %s\n",
+        sub.decode(sub.encode(strPlain)));
+
+    System.out.printf("ShuffleCipher encode: %s\n", shuf.encode(strPlain));
+    System.out.printf("ShuffleCipher decode: %s\n",
+        shuf.decode(shuf.encode(strPlain)));
 
     System.exit(0);
   }

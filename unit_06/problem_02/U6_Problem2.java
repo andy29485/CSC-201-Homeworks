@@ -29,15 +29,44 @@ package unit_06.problem_02;
  *     Hint: You may wish to define a private method that performs one shuffle.
  *
  * Assumptions:
- *   - TODO
+ *   - accessor/mutator methods are not needed for the classes
+ *   - there is no method do decode a message
+ *   - for the SubstitutionCipher only letter will be decoded
  *
  * Pseudocode:
- *   1. TODO
+ *   1. SubstitutionCipher
+ *     1.1 create empty string for output
+ *     1.2 for each char
+ *       1.2.1 if char is a letter
+ *         1.2.1.1 convert char to range [0-25] from [A-Z] or [a-z]
+ *         1.2.1.2 add shift
+ *         1.2.1.3 mod back to range [0-25]
+ *         1.2.1.4 shift back to range [A-Z] or [a-z]
+ *       1.2.3 add char to output
+ *     1.3 return output
+ *   2. ShuffleCipher
+ *     2.1 for n times
+ *       2.1.1 create empty temp string
+ *       2.1.2 split string in half(2 new strings)
+ *       2.1.3 create counter start at zero
+ *       2.1.4 while temp len < original len
+ *         2.1.4.1 if left len < counter
+ *           2.1.4.1.1 add left char at counter to temp
+ *         2.1.4.2 if right len < counter
+ *           2.1.4.2.1 add right char at counter to temp
+ *         2.1.4.3 increase counter
+ *       2.1.5 set original string to temp
+ *     2.2 return the original(which was modified)
+ *
  */
 
 public class U6_Problem2 {
   public static void main(String[] args) {
-    // TODO
+    MessageEncoder sub = new SubstitutionCipher(3);
+    MessageEncoder shuf = new ShuffleCipher(2);
+
+    System.out.println("SubstitutionCipher: " + sub.encode("abcdefghi"));
+    System.out.println("ShuffleCipher: " + shuf.encode("abcdefghi"));
 
     System.exit(0);
   }

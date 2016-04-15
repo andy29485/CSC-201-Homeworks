@@ -18,10 +18,12 @@ package unit_06.problem_book_13_14;
  * this new Rational class without being recompiled.
  *
  * Assumptions:
- *  - TODO
+ *  - nothing really needs to be changed
  *
  * Pseudocode:
- *  1. TODO
+ *  1. replace declaration of numerator and denominator to int[] r
+ *  2. change all occurrences of numerator to r[0]
+ *  3. change all occurrences of denominator to r[1]
  */
 
 class Rational extends Number implements Comparable<Rational> {

@@ -24,12 +24,20 @@ package unit_06.problem_01;
  *   - no need for accessor/modifier methods for payRate
  *
  * Pseudocode:
- *   1. create a class with a single method
+ *   1. create an abstract class with a single method
+ *       that returns num_hours*pay_rate
+ *   2. extend that class provide constructors
+ *   3. extend again but now have that method return the original
+ *       value * 1.5
  */
 
 public class U6_Problem1 {
   public static void main(String[] args) {
-    // TODO
+    PayCalculator a = new RegularPay(10);
+    PayCalculator b = new HazardPay(10);
+
+    System.out.printf("5h RegularPay: %f\n", a.computePay(5));
+    System.out.printf("5h HazardPay:  %f\n", b.computePay(5));
 
     System.exit(0);
   }
