@@ -24,7 +24,12 @@ import java.io.InputStreamReader;
  *   - Both the encoded and decoded versions of the string will be printed
  *
  * Pseudocode:
- *   1. TODO
+ *   1. See problem 2 for the encode methods
+ *   2. The decode methods are basically the reverse of the encode ones
+ *   3. main
+ *     3.1 create an instance of both objects
+ *     3.2 ask for a string
+ *     3.3 print the string encoded, and encoded then decoded using both objs
  */
 
 public class U6_Problem3 {
@@ -44,6 +49,7 @@ public class U6_Problem3 {
     System.out.printf("ShuffleCipher decode: %s\n",
         shuf.decode(shuf.encode(strPlain)));
 
+    input.close();
     System.exit(0);
   }
 }
