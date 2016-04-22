@@ -1,5 +1,9 @@
 package unit_07.problem_03;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 // Name: Andriy Zasypkin
 // Date: 2016-04-19
 // Unit: 07
@@ -22,13 +26,37 @@ package unit_07.problem_03;
  *
  * Assumptions:
  *   - File IO will *NOT* be achieved through piping
+ *   - Essentually the reverse of 7.2
+ *   - "CycleIn.txt" can be "cyclein.txt" (since I prefer lowercase filenames)
  *
  * Pseudocode:
- *   1. TODO
+ *   1. open file, if exists
+ *   2. read line, extract numbers.
+ *   3. create Cycle object from numbers
+ *   4. print Cycle object
  */
 
 public class U7_Problem3 {
   public static void main(String[] args) {
-    // TODO
+    // step 1
+    File f = new File("cyclein.txt");
+    try {
+      Scanner scan = new Scanner(f);
+
+      // step 2
+      String[] nums = scan.nextLine().split("[^0-9\\.]+");
+
+      // step 3
+      Cycle c = new Cycle(Double.valueOf(nums[0]), Double.valueOf(nums[1]));
+
+      // step 4
+      System.out.println(c);
+
+      scan.close();
+    }
+    catch(FileNotFoundException e) {
+      System.out.println("The input file does not exist");
+      System.exit(1);
+    }
   }
 }

@@ -31,13 +31,39 @@ package unit_07.problem_01;
  * Assumptions:
  *   - "Word Processor" means Text Editor
  *   - File IO will *NOT* be achieved through piping
+ *   - Although I disagree with having numberOfWheels as a
+ *     double(what is .4 wheels?), I will assume that it does
+ *     need to be a double
  *
  * Pseudocode:
- *   1. TODO
+ *   1. Create scanner, and default Cycle
+ *   2. ask for numbers
+ *   3. read/set numbers
+ *   4. [in mutator methods] if number is <= 0, throw exception w/ message
+ *   5. print cycle specs
  */
+
+import java.util.Scanner;
 
 public class U7_Problem1 {
   public static void main(String[] args) {
-    // TODO
+    // step 1
+    Scanner scan = new Scanner(System.in);
+    Cycle c = new Cycle();
+
+    // step 2a + 3a
+    System.out.print("Enter number of wheels on cycle: ");
+    c.setNumberOfWheels(scan.nextDouble());
+    scan.nextLine();
+
+    // step 2b + 3b
+    System.out.print("Enter cycle mass: ");
+    c.setWeight(scan.nextDouble());
+    scan.nextLine();
+
+    // step 5
+    System.out.println(c);
+
+    scan.close();
   }
 }
