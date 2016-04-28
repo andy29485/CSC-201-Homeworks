@@ -38,7 +38,8 @@ import java.io.ObjectOutputStream;
  *     - Display an appropriate message if an exception occurs.
  *
  * Assumptions:
- *   - TODO
+ *   - no need to display anything if no errors occur
+ *   - no need to read objects
  *
  * Pseudocode:
  *   1. same as directions
